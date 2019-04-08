@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des produits - {{ parent() }}{% endblock %}
+
+{% block body %}
+    <h1 class="my-4">
+        Nos produits
+        <a class="btn btn-info" href="{{ path('product_create') }}">Créer un produit</a>
+    </h1>
+
+    <div class="row">
+        {% for product in products %}
+            <div class="col-lg-3">
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h3 class="card-title">{{ product.name }}</h3>
+                        <h5>{{ product.price / 100 }} &euro;</h5>
+                    </div>
+                    <div class="card-footer">
+                        <a href="{{ path('product_show', {'id': product.id}) }}" class="btn btn-primary btn-block">Voir le produit</a>
+                        <div class="text-center mt-2">
+                            <a href="{{ path('product_edit', {'id': product.id}) }}" class="btn btn-info">
+                                <i class="fa fa-pencil"></i>
+                            </a>
+                            <form class="d-inline" method="post" action="{{ path('product_delete', {'id': product.id}) }}" onsubmit="return confirm('Etes-vous sûr de vouloir supprimer {{ product.name }} ?')">
+                                <input type="hidden" name="token" value="{{ csrf_token('delete') }}" />
+                                <button class="btn btn-danger"><i class="fa fa-trash"></i></button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
